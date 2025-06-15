@@ -11,6 +11,7 @@ import datetime
 import requests
 import logging
 import json
+import os
 import re
 import urllib3
 # import urllib.request
@@ -61,7 +62,18 @@ def _get_apod_chars(dt, thumbs):
     else:
         apod_url = '%sastropix.html' % BASE
     LOG.debug('OPENING URL:' + apod_url)
-    res = requests.get(apod_url)
+    try:
+        res = requests.get(apod_url)
+    except requests.exceptions.RequestException as e:
+        LOG.error(f'Failed to fetch {apod_url}: {e}')
+        default_obj_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'default_apod_object.json')
+        default_obj_path = os.path.normpath(default_obj_path)
+        LOG.debug(f'Loading default APOD response from {default_obj_path}')
+        with open(default_obj_path, 'r') as f:
+            default_obj_props = json.load(f)
+        if dt:
+            default_obj_props['date'] = dt.strftime('%Y-%m-%d')
+        return default_obj_props
     
     if res.status_code == 404:
         return None

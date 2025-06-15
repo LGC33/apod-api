@@ -16,6 +16,9 @@ You can find a frozen version of the previous code in the branch called <a href=
 #### API Reliability
 A very large number of people use the instance of this API that NASA has set up. If you need a extremely reliable version of this API, you likely want to stand up your own version of the API. You can do that with this code! All information that this API returns is actually just grabbed from the <a href='https://apod.nasa.gov/apod/astropix.html'>Astronomy Photo of the Day Website</a> (APOD).
 
+#### Offline Usage
+If network access to the APOD site is unavailable, the service falls back to the JSON object in `static/default_apod_object.json` and returns the accompanying image from `static/default_apod_image.jpg`.
+
 #### Content Related Issues
 No one watching this repository has anything to do with Astronomy Photo of the Day website, so we're unable to deal with issues directly related to their content. Please contact them directly.
 
